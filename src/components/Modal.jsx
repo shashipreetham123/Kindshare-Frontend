@@ -10,6 +10,7 @@ function Modal({
   message,
   description,
   type = 'primary',
+  size = 'medium',
   confirmText = 'Confirm',
   cancelText = 'Cancel',
   confirmIcon: ConfirmIcon,
@@ -67,7 +68,7 @@ function Modal({
 
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick} role="dialog" aria-modal="true">
-      <div className={`modal-container modal-type-${type}`} ref={modalRef}>
+      <div className={`modal-container modal-type-${type} modal-size-${size}`} ref={modalRef}>
         <div className="modal-header">
           <div className="modal-header-left">
             {getHeaderIcon()}
@@ -131,38 +132,40 @@ function Modal({
             {children}
           </div>
 
-          <div className="modal-footer">
-            {cancelText && (
-              <button
-                type="button"
-                className="modal-btn modal-btn-cancel"
-                onClick={onClose}
-                disabled={isLoading}
-              >
-                {cancelText}
-              </button>
-            )}
+          {(cancelText || confirmText) && (
+            <div className="modal-footer">
+              {cancelText && (
+                <button
+                  type="button"
+                  className="modal-btn modal-btn-cancel"
+                  onClick={onClose}
+                  disabled={isLoading}
+                >
+                  {cancelText}
+                </button>
+              )}
 
-            {confirmText && (
-              <button
-                type="submit"
-                className={`modal-btn modal-btn-confirm btn-${type}`}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 size={15} className="modal-spin" />
-                    <span>Processing...</span>
-                  </>
-                ) : (
-                  <>
-                    {ConfirmIcon && <ConfirmIcon size={16} />}
-                    <span>{confirmText}</span>
-                  </>
-                )}
-              </button>
-            )}
-          </div>
+              {confirmText && (
+                <button
+                  type="submit"
+                  className={`modal-btn modal-btn-confirm btn-${type}`}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 size={15} className="modal-spin" />
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <>
+                      {ConfirmIcon && <ConfirmIcon size={16} />}
+                      <span>{confirmText}</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
+          )}
         </form>
       </div>
     </div>

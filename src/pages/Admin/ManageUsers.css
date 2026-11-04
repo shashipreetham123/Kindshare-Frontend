@@ -289,12 +289,14 @@
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 1rem;
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .users-table {
   width: 100%;
+  min-width: 680px;
   border-collapse: collapse;
   text-align: left;
 }
@@ -664,4 +666,48 @@
 
 .text-danger:hover {
   background-color: #b91c1c;
+}
+
+@media (max-width: 768px) {
+  .admin-users-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .admin-filters-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-field-wrap {
+    width: 100%;
+  }
+  .filter-selects-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .filter-select {
+    flex: 1;
+  }
+}
+
+@media (max-width: 580px) {
+  .user-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-stats-row {
+    grid-template-columns: 1fr;
+  }
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .header-actions .btn-primary,
+  .header-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
 }

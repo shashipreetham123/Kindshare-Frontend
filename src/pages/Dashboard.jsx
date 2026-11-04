@@ -15,14 +15,18 @@ import {
   CheckCircle,
   AlertCircle,
   PlusCircle,
+  Menu,
+  X,
   User as UserIcon
 } from 'lucide-react';
 import api from '../services/api';
+import ThemeToggle from '../components/ThemeToggle';
 import './Dashboard.css';
 
 function Dashboard() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +35,6 @@ function Dashboard() {
         const res = await api.get('/user/me');
         setUser(res.user);
       } catch (err) {
-
         navigate('/login');
       } finally {
         setLoading(false);
@@ -75,15 +78,56 @@ function Dashboard() {
 
   const links = isAdmin ? adminLinks : userLinks;
 
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
   return (
     <div className="dashboard-container">
-      <aside className="dashboard-sidebar">
+      <header className="dashboard-mobile-bar">
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+        >
+          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+
+        <div className="mobile-bar-brand">
+          <HeartHandshake className="brand-icon" size={22} />
+          <span className="brand-title">KindShare</span>
+          <span className={`brand-badge ${isAdmin ? 'badge-admin' : 'badge-user'}`}>
+            {isAdmin ? 'Admin' : 'User'}
+          </span>
+        </div>
+
+        <div className="mobile-bar-actions">
+          <ThemeToggle />
+          {user && (
+            <div className="avatar avatar-sm">
+              {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+            </div>
+          )}
+        </div>
+      </header>
+
+      {mobileMenuOpen && (
+        <div
+          className="sidebar-backdrop"
+          onClick={closeMobileMenu}
+          aria-hidden="true"
+        />
+      )}
+
+      <aside className={`dashboard-sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-header">
           <div className="brand-logo">
             <HeartHandshake className="brand-icon" size={26} />
           </div>
           <div className="brand-info">
-            <span className="brand-title">KindShare</span>
+            <div className="brand-title-row">
+              <span className="brand-title">KindShare</span>
+              <ThemeToggle className="sidebar-theme-toggle" />
+            </div>
             <div className="brand-badges-row">
               <span className={`brand-badge ${isAdmin ? 'badge-admin' : 'badge-user'}`}>
                 {isAdmin ? (
@@ -120,6 +164,7 @@ function Dashboard() {
               <NavLink
                 key={link.path}
                 to={link.path}
+                onClick={closeMobileMenu}
                 className={({ isActive }) =>
                   `nav-item ${isActive ? 'nav-item-active' : ''}`
                 }

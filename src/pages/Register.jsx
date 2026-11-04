@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, Lock, Mail, Phone, MapPin, Building2, Globe, ArrowRight, Loader2, HeartHandshake } from 'lucide-react';
 import api from '../services/api';
+import ThemeToggle from '../components/ThemeToggle';
 import './Register.css';
 
 function Register() {
@@ -71,6 +72,9 @@ function Register() {
 
   return (
     <div className="register-container">
+      <div className="auth-theme-toggle-wrap">
+        <ThemeToggle />
+      </div>
       <div className="register-card">
         <div className="register-header">
           <div className="logo-badge">

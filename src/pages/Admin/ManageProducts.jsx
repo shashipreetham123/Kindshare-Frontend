@@ -279,6 +279,8 @@ function ManageProducts() {
         onClose={() => setDelistTarget(null)}
         title="Confirm Product Delisting"
         size="medium"
+        cancelText={null}
+        confirmText={null}
       >
         {delistTarget && (
           <div>

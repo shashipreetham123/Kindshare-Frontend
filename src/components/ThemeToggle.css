@@ -1,0 +1,41 @@
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--input-bg, #f1f5f9);
+  border: 1px solid var(--border-color, #e2e8f0);
+  color: var(--text-main, #334155);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--primary-glow, rgba(99, 102, 241, 0.15));
+  border-color: var(--primary, #6366f1);
+  color: var(--primary, #6366f1);
+}
+
+.theme-toggle-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-sun-icon {
+  color: #f59e0b;
+}
+
+.theme-moon-icon {
+  color: #6366f1;
+}
+
+.theme-toggle-label {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: inherit;
+}
+

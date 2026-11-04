@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, Lock, ArrowRight, Loader2, HeartHandshake } from 'lucide-react';
 import api from '../services/api';
+import ThemeToggle from '../components/ThemeToggle';
 import './Login.css';
 
 function Login() {
@@ -38,6 +39,9 @@ function Login() {
 
   return (
     <div className="login-container">
+      <div className="auth-theme-toggle-wrap">
+        <ThemeToggle />
+      </div>
       <div className="login-card">
         <div className="login-header">
           <div className="logo-badge">

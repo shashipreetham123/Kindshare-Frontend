@@ -459,3 +459,9 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 480px) {
+  .requests-grid {
+    grid-template-columns: 1fr;
+  }
+}

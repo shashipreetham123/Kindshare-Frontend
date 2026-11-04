@@ -272,3 +272,9 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 480px) {
+  .inventory-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -465,6 +465,8 @@ function ManageUsers() {
         onClose={() => setIsCreateOpen(false)}
         title="Create New User Account"
         size="large"
+        cancelText={null}
+        confirmText={null}
       >
         <form onSubmit={handleCreateUser} className="user-form-grid">
           <div className="form-field-group">
@@ -598,6 +600,8 @@ function ManageUsers() {
         onClose={() => setDeleteTarget(null)}
         title="Confirm User Deletion"
         size="medium"
+        cancelText={null}
+        confirmText={null}
       >
         {deleteTarget && (
           <div>
