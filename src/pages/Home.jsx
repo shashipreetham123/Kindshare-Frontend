@@ -123,7 +123,6 @@ function Home() {
 
   return (
     <div className="home-container">
-      {/* 1. Welcome Screen Banner */}
       <section className="welcome-banner">
         <div className="welcome-content">
           <div className="welcome-tag">
@@ -170,7 +169,6 @@ function Home() {
         </div>
       </section>
 
-      {/* 2. Place for Advert / Announcements */}
       <section className="announcement-card">
         <div className="announcement-icon-wrap">
           <Megaphone className="announcement-icon" size={24} />
@@ -193,7 +191,6 @@ function Home() {
         </div>
       </section>
 
-      {/* 3. Available Links for the User / Admin */}
       <section className="actions-section">
         <div className="section-header">
           <h2>Quick Navigation</h2>

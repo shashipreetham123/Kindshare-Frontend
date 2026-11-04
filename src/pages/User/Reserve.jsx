@@ -30,7 +30,6 @@ function Reserve() {
   const context = useOutletContext() || {};
   const { user } = context;
 
-  // Active section tab: 'donor' (For Donor) or 'beneficiary' (For Beneficiary)
   const [activeTab, setActiveTab] = useState('donor');
   const [reservesAsDonor, setReservesAsDonor] = useState([]);
   const [reservesAsBeneficiary, setReservesAsBeneficiary] = useState([]);
@@ -39,17 +38,15 @@ function Reserve() {
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState('');
 
-  // User Info Modal State (shows Beneficiary details to Donor or Donor details to Beneficiary)
   const [userInfoModal, setUserInfoModal] = useState({
     isOpen: false,
-    partnerRole: '', // 'Beneficiary' | 'Donor'
+    partnerRole: '',
     partnerDetails: null
   });
 
-  // Confirmation Modal Configuration (for Complete / Cancel)
   const [modalConfig, setModalConfig] = useState({
     isOpen: false,
-    actionType: null, // 'complete' | 'cancel'
+    actionType: null,
     reserveItem: null,
     title: '',
     message: '',
@@ -59,7 +56,6 @@ function Reserve() {
     confirmIcon: null
   });
 
-  // Fetch categorized reserves from backend
   const fetchReserves = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -80,7 +76,6 @@ function Reserve() {
     fetchReserves();
   }, [fetchReserves]);
 
-  // Open Complete Modal for either Donor or Beneficiary
   const openCompleteModal = (item, role) => {
     const prodName = item.product ? item.product.name : 'this item';
     const partnerRole = role === 'donor' ? 'beneficiary' : 'donor';
@@ -104,7 +99,6 @@ function Reserve() {
     });
   };
 
-  // Open Cancel Modal for either Donor or Beneficiary
   const openCancelModal = (item, role) => {
     const prodName = item.product ? item.product.name : 'this item';
     const partnerName = role === 'donor' ? item.beneficiaryUsername : item.donorUsername;
@@ -122,7 +116,6 @@ function Reserve() {
     });
   };
 
-  // Open User Info Modal to display partner contact details (Username, Phone Number, Email)
   const openUserInfoModal = (item, role) => {
     const isDonor = role === 'donor';
     const partnerRole = isDonor ? 'Beneficiary' : 'Donor';
@@ -141,7 +134,6 @@ function Reserve() {
     });
   };
 
-  // Execute Action upon confirmation in Modal
   const handleConfirmAction = async () => {
     const { actionType, reserveItem } = modalConfig;
     if (!reserveItem) return;
@@ -178,7 +170,6 @@ function Reserve() {
 
   return (
     <div className="reserves-container">
-      {/* 1. Page Header with Section Switcher */}
       <header className="reserves-header">
         <div className="reserves-title-col">
           <div className="reserves-title-row">
@@ -192,7 +183,6 @@ function Reserve() {
           </div>
         </div>
 
-        {/* Section Tabs Switcher (For Donor and For Beneficiary) */}
         <div className="section-tabs-bar">
           <button
             type="button"
@@ -220,7 +210,6 @@ function Reserve() {
         </div>
       </header>
 
-      {/* Status Alerts */}
       {error && (
         <div className="reserves-alert alert-error">
           <AlertCircle size={18} className="alert-icon" />
@@ -235,7 +224,6 @@ function Reserve() {
         </div>
       )}
 
-      {/* 2. Main Content Area */}
       <main className="reserves-main-content">
         {loading ? (
           <div className="reserves-loading-state">
@@ -270,7 +258,6 @@ function Reserve() {
               const product = reserve.product || {};
               const isDonor = activeTab === 'donor';
 
-              // User's own confirmation state vs partner's confirmation state
               const myCompleted = isDonor ? reserve.donorCompleted : reserve.beneficiaryCompleted;
               const partnerCompleted = isDonor ? reserve.beneficiaryCompleted : reserve.donorCompleted;
               const partnerUsername = isDonor ? reserve.beneficiaryUsername : reserve.donorUsername;
@@ -286,7 +273,6 @@ function Reserve() {
 
               return (
                 <div key={reserve._id} className="reserve-card">
-                  {/* Card Top: Product Image and Details */}
                   <div className="reserve-card-header">
                     <div className="reserve-product-thumb">
                       {product.coverImage ? (
@@ -336,7 +322,6 @@ function Reserve() {
                     </div>
                   </div>
 
-                  {/* Card Middle: Partner Attribution & Status Banner */}
                   <div className="reserve-partner-box">
                     <div className="user-box-row">
                       <div className="user-avatar-circle">
@@ -372,7 +357,6 @@ function Reserve() {
                     </div>
                   </div>
 
-                  {/* Dual-Confirmation Status Banner */}
                   <div className="reserve-status-callout">
                     {myCompleted && !partnerCompleted && (
                       <div className="callout-box callout-waiting">
@@ -394,7 +378,6 @@ function Reserve() {
                     )}
                   </div>
 
-                  {/* Card Bottom: Both Have Complete and Cancel Button */}
                   <div className="reserve-card-actions">
                     <button
                       type="button"
@@ -424,7 +407,6 @@ function Reserve() {
         )}
       </main>
 
-      {/* Confirmation Modal */}
       <Modal
         isOpen={modalConfig.isOpen}
         onClose={() => setModalConfig((prev) => ({ ...prev, isOpen: false }))}
@@ -439,7 +421,6 @@ function Reserve() {
         description={modalConfig.description}
       />
 
-      {/* User Info Details Modal (Shows Beneficiary Details to Donor or Donor Details to Beneficiary) */}
       <Modal
         isOpen={userInfoModal.isOpen}
         onClose={() => setUserInfoModal((prev) => ({ ...prev, isOpen: false }))}
@@ -471,7 +452,6 @@ function Reserve() {
             </div>
 
             <div className="user-details-fields-list">
-              {/* Username Field */}
               <div className="user-detail-row">
                 <div className="user-detail-icon-wrap">
                   <User size={16} />
@@ -482,7 +462,6 @@ function Reserve() {
                 </div>
               </div>
 
-              {/* Email Field */}
               <div className="user-detail-row">
                 <div className="user-detail-icon-wrap">
                   <Mail size={16} />
@@ -502,7 +481,6 @@ function Reserve() {
                 </div>
               </div>
 
-              {/* Phone Number Field */}
               <div className="user-detail-row">
                 <div className="user-detail-icon-wrap">
                   <Phone size={16} />
@@ -522,7 +500,6 @@ function Reserve() {
                 </div>
               </div>
 
-              {/* Address (Optional if present) */}
               {userInfoModal.partnerDetails.address && (
                 <div className="user-detail-row">
                   <div className="user-detail-icon-wrap">

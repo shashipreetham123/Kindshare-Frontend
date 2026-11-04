@@ -12,7 +12,6 @@ import Reserve from './pages/User/Reserve';
 import History from './pages/User/History';
 import AddProduct from './pages/User/AddProduct';
 
-// Admin Features
 import ManageUsers from './pages/Admin/ManageUsers';
 import ManageHistory from './pages/Admin/ManageHistory';
 import ManageProducts from './pages/Admin/ManageProducts';
@@ -22,13 +21,11 @@ import UserSettings from './pages/User/UserSettings';
 
 import './App.css';
 
-// Context-aware component for History: switches between user personal history and Admin audit history
 function RoleHistoryPage() {
   const context = useOutletContext() || {};
   return context.isAdmin ? <ManageHistory /> : <History />;
 }
 
-// Context-aware component for Settings: renders AdminSettings or UserSettings
 function RoleSettingsPage() {
   const context = useOutletContext() || {};
   return context.isAdmin ? <AdminSettings /> : <UserSettings />;
@@ -41,7 +38,6 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* Dashboard with nested child routes rendered inside its Outlet */}
       <Route path="/dashboard" element={<Dashboard />}>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<Home />} />
@@ -56,7 +52,6 @@ function App() {
         <Route path="history" element={<RoleHistoryPage />} />
         <Route path="account-settings" element={<RoleSettingsPage />} />
 
-        {/* Admin Specific Routes */}
         <Route path="users" element={<ManageUsers />} />
         <Route path="moderate-products" element={<ManageProducts />} />
         <Route path="transactions" element={<ManageRequestsReserves />} />

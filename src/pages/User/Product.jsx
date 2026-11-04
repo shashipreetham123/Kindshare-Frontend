@@ -37,7 +37,6 @@ function Product() {
   const context = useOutletContext() || {};
   const { user, isAdmin } = context;
 
-  // Passed state from Browse cards if available
   const initialProduct = location.state && location.state.product ? location.state.product : null;
 
   const [product, setProduct] = useState(initialProduct);
@@ -45,23 +44,18 @@ function Product() {
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Selected image for gallery viewer
   const [activeImage, setActiveImage] = useState(initialProduct ? initialProduct.coverImage : '');
 
-  // Request quantity state
   const [requestQuantity, setRequestQuantity] = useState(1);
   const [requestNote, setRequestNote] = useState('');
 
-  // Request Confirmation Modal
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [submittingRequest, setSubmittingRequest] = useState(false);
 
-  // Admin Delist / Remove Modal State
   const [showAdminRemoveModal, setShowAdminRemoveModal] = useState(false);
   const [adminRemoveConfirmInput, setAdminRemoveConfirmInput] = useState('');
   const [isRemovingByAdmin, setIsRemovingByAdmin] = useState(false);
 
-  // Load product details
   useEffect(() => {
     async function fetchProductDetails() {
       const targetId = productId || (initialProduct && (initialProduct._id || initialProduct.id));
@@ -74,13 +68,13 @@ function Product() {
       try {
         setLoading(true);
         setError(null);
-        // GET /user/product/:productId or /user/product?_id=...
+
         let data = null;
         try {
           const res = await api.get(`/user/product/${targetId}`);
           data = res.data;
         } catch (e) {
-          // Fallback query if route params difference
+
           const res = await api.get(`/user/product?_id=${targetId}`);
           if (res.data && res.data.length > 0) {
             data = res.data[0];
@@ -109,7 +103,6 @@ function Product() {
     }
   }, [productId]);
 
-  // Cancel / Go back to Browse
   const handleCancel = () => {
     navigate(-1);
   };
@@ -127,7 +120,6 @@ function Product() {
 
   const isOutOfStock = availableQuantity <= 0;
 
-  // Open Request Modal
   const handleOpenRequestModal = () => {
     setError(null);
     setSuccessMsg('');
@@ -150,7 +142,6 @@ function Product() {
     setShowRequestModal(true);
   };
 
-  // Admin Delist / Remove Product
   const handleAdminRemoveProduct = async () => {
     const targetId = product._id || product.id || productId;
     if (!targetId) return;
@@ -163,7 +154,6 @@ function Product() {
       setShowAdminRemoveModal(false);
       setSuccessMsg(`Product "${product.name}" has been removed and delisted by administrator.`);
 
-      // Navigate back after brief delay
       setTimeout(() => {
         navigate('/dashboard/browse');
       }, 1500);
@@ -176,7 +166,6 @@ function Product() {
     }
   };
 
-  // Submit Request: (POST /user/request)
   const handleConfirmRequest = async () => {
     try {
       setSubmittingRequest(true);
@@ -196,7 +185,6 @@ function Product() {
       setRequestNote('');
       setSuccessMsg(res.message || 'Your request has been submitted to the donor successfully!');
 
-      // Scroll up to view success alert
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       console.error('Request failed:', err);
@@ -245,7 +233,6 @@ function Product() {
 
   return (
     <div className="product-details-page">
-      {/* Top Bar Navigation */}
       <div className="product-topbar">
         <button type="button" onClick={handleCancel} className="btn-back">
           <ArrowLeft size={18} />
@@ -256,7 +243,6 @@ function Product() {
         </div>
       </div>
 
-      {/* Feedback Messages */}
       {error && (
         <div className="product-alert alert-error">
           <AlertCircle size={18} className="alert-icon" />
@@ -271,9 +257,7 @@ function Product() {
         </div>
       )}
 
-      {/* Main Product Showcase Card */}
       <div className="product-showcase-container">
-        {/* Left Column: Media Gallery */}
         <div className="product-media-column">
           <div className="main-image-display">
             {activeImage ? (
@@ -300,7 +284,6 @@ function Product() {
             </div>
           </div>
 
-          {/* Thumbnail Gallery Strip */}
           {allImages.length > 1 && (
             <div className="gallery-thumbnails-strip">
               {allImages.map((img, idx) => (
@@ -318,7 +301,6 @@ function Product() {
           )}
         </div>
 
-        {/* Right Column: Information, Donor Attribution & Request Controls */}
         <div className="product-info-column">
           <div className="product-title-section">
             <span className="product-badge-category">
@@ -339,7 +321,6 @@ function Product() {
             </div>
           </div>
 
-          {/* Donor Card Info */}
           <div className="donor-card-box">
             <div className="donor-card-avatar">
               <User size={18} />
@@ -363,21 +344,19 @@ function Product() {
             </div>
           </div>
 
-          {/* Description Section */}
           <div className="product-description-section">
             <h3>About This Offering</h3>
             <p className="product-description-text">{product.description}</p>
           </div>
 
-          {/* Request / Admin Action Area */}
           <div className="request-action-card">
             {isAdmin ? (
-              <div className="admin-moderation-panel" style={{ padding: '0.5rem 0', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#6366f1', fontSize: '0.875rem', fontWeight: 600 }}>
+              <div className="admin-moderation-panel">
+                <div className="admin-moderation-title">
                   <ShieldCheck size={18} />
                   <span>Administrator Oversight Mode</span>
                 </div>
-                <p style={{ fontSize: '0.825rem', color: '#64748b', margin: 0 }}>
+                <p className="admin-moderation-desc">
                   Administrators can view all item specifications, donor metadata, and inventory levels, but cannot place personal item requests. You may remove or delist this listing if needed.
                 </p>
               </div>
@@ -441,7 +420,6 @@ function Product() {
               </div>
             )}
 
-            {/* 2) Action buttons */}
             <div className="product-buttons-row">
               <button type="button" onClick={handleCancel} className="btn-product-cancel">
                 <X size={16} />
@@ -455,8 +433,7 @@ function Product() {
                     setAdminRemoveConfirmInput('');
                     setShowAdminRemoveModal(true);
                   }}
-                  className="btn-product-cancel"
-                  style={{ backgroundColor: '#fee2e2', color: '#dc2626', borderColor: '#fca5a5' }}
+                  className="btn-admin-remove"
                 >
                   <Trash2 size={16} />
                   <span>Remove Listing</span>
@@ -478,7 +455,6 @@ function Product() {
         </div>
       </div>
 
-      {/* 3) Request Confirmation Modal using Modal.jsx */}
       <Modal
         isOpen={showRequestModal}
         onClose={() => setShowRequestModal(false)}
@@ -510,7 +486,6 @@ function Product() {
         ]}
       />
 
-      {/* 4) Admin Delist / Remove Modal */}
       <Modal
         isOpen={showAdminRemoveModal}
         onClose={() => setShowAdminRemoveModal(false)}
@@ -518,8 +493,8 @@ function Product() {
         size="medium"
       >
         <div>
-          <div style={{ backgroundColor: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '0.75rem', padding: '0.875rem 1rem', color: '#991b1b', fontSize: '0.85rem', marginBottom: '1rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700, marginBottom: '0.35rem' }}>
+          <div className="admin-remove-warning">
+            <div className="admin-remove-warning-header">
               <ShieldAlert size={18} />
               <span>Administrative Removal Notice</span>
             </div>
@@ -537,7 +512,7 @@ function Product() {
             value={adminRemoveConfirmInput}
             onChange={(e) => setAdminRemoveConfirmInput(e.target.value)}
             placeholder="delist"
-            style={{ width: '100%', padding: '0.625rem 0.85rem', fontSize: '0.875rem', border: '1px solid #cbd5e1', borderRadius: '0.65rem', outline: 'none' }}
+            className="admin-delist-input"
           />
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>
@@ -552,21 +527,7 @@ function Product() {
               type="button"
               onClick={handleAdminRemoveProduct}
               disabled={adminRemoveConfirmInput.toLowerCase().trim() !== 'delist' || isRemovingByAdmin}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                padding: '0.6rem 1.25rem',
-                backgroundColor: '#dc2626',
-                borderColor: '#b91c1c',
-                color: '#ffffff',
-                borderRadius: '0.65rem',
-                border: '1px solid #b91c1c',
-                fontSize: '0.875rem',
-                fontWeight: 600,
-                cursor: adminRemoveConfirmInput.toLowerCase().trim() !== 'delist' || isRemovingByAdmin ? 'not-allowed' : 'pointer',
-                opacity: adminRemoveConfirmInput.toLowerCase().trim() !== 'delist' || isRemovingByAdmin ? 0.6 : 1
-              }}
+              className="btn-admin-confirm-remove"
             >
               <Trash2 size={15} />
               <span>{isRemovingByAdmin ? 'Removing Listing...' : 'Confirm Remove'}</span>

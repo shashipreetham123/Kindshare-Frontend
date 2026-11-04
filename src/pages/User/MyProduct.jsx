@@ -36,14 +36,12 @@ function MyProduct() {
   const context = useOutletContext() || {};
   const { user } = context;
 
-  // Initial passed state if navigating from InventoryCard/List
   const initialData = location.state && location.state.product ? location.state.product : null;
 
   const [loading, setLoading] = useState(!initialData);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  // Modals state
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [updateConfirmNote, setUpdateConfirmNote] = useState('');
@@ -52,7 +50,6 @@ function MyProduct() {
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Form Fields
   const [id, setId] = useState(initialData ? initialData._id || initialData.id : productId || '');
   const [name, setName] = useState(initialData ? initialData.name || '' : '');
   const [description, setDescription] = useState(initialData ? initialData.description || '' : '');
@@ -63,11 +60,9 @@ function MyProduct() {
     initialData && Array.isArray(initialData.images) ? initialData.images.join(', ') : ''
   );
 
-  // Immutable attributes
   const [username, setUsername] = useState(initialData ? initialData.username || '' : '');
   const [listedAt, setListedAt] = useState(initialData ? initialData.listedAt : null);
 
-  // Fetch product data if not passed or needed
   useEffect(() => {
     async function loadProduct() {
       const targetId = productId || (initialData && (initialData._id || initialData.id));
@@ -80,7 +75,7 @@ function MyProduct() {
       try {
         setLoading(true);
         setError(null);
-        // Fetch via /user/product/:productId which checks both id and user ownership
+
         const res = await api.get(`/user/product/${targetId}`);
         const found = res.data;
 
@@ -109,12 +104,10 @@ function MyProduct() {
     loadProduct();
   }, [productId]);
 
-  // Go back to previous page
   const handleCancel = () => {
     navigate(-1);
   };
 
-  // Pre-validate and open Update Confirmation Modal
   const handleOpenUpdateModal = (e) => {
     e.preventDefault();
     setError(null);
@@ -139,7 +132,6 @@ function MyProduct() {
     setShowUpdateModal(true);
   };
 
-  // Confirmed Update: (PUT /user/product)
   const handleConfirmUpdate = async () => {
     try {
       setSaving(true);
@@ -180,7 +172,6 @@ function MyProduct() {
     }
   };
 
-  // Confirmed Delete: (DELETE /user/product/:productId)
   const handleConfirmDelete = async () => {
     try {
       setDeleting(true);
@@ -190,7 +181,6 @@ function MyProduct() {
       setShowDeleteModal(false);
       setDeleteConfirmationText('');
 
-      // Navigate back to inventory or previous page
       navigate('/dashboard/inventory', { replace: true });
     } catch (err) {
       console.error('Delete failed:', err);
@@ -219,7 +209,6 @@ function MyProduct() {
 
   return (
     <div className="myproduct-page">
-      {/* Top Navigation & Breadcrumb */}
       <div className="myproduct-topbar">
         <button type="button" onClick={handleCancel} className="btn-back">
           <ArrowLeft size={18} />
@@ -229,7 +218,6 @@ function MyProduct() {
       </div>
 
       <div className="myproduct-container">
-        {/* Header Title with Status Messages */}
         <div className="myproduct-header">
           <div className="myproduct-title-wrap">
             <Package size={26} className="header-icon" />
@@ -257,7 +245,6 @@ function MyProduct() {
         )}
 
         <form onSubmit={handleOpenUpdateModal} className="myproduct-form">
-          {/* 1. At the Top: Immutable Textbox of Product ID */}
           <div className="form-group-immutable-id">
             <label htmlFor="product-id-input">
               <Lock size={14} className="label-icon" />
@@ -277,7 +264,6 @@ function MyProduct() {
             </div>
           </div>
 
-          {/* 2. Immutable Details Ribbon: Username & ListedAt */}
           <div className="immutable-details-card">
             <div className="immutable-detail-item">
               <span className="detail-label">
@@ -300,7 +286,6 @@ function MyProduct() {
             </div>
           </div>
 
-          {/* 3. Form Fields of the Product (Editable) */}
           <div className="editable-fields-section">
             <div className="field-group">
               <label htmlFor="product-name">Product Name *</label>
@@ -381,14 +366,16 @@ function MyProduct() {
               {coverImage && (
                 <div className="cover-image-preview">
                   <span className="preview-label">Cover Preview:</span>
-                  <img
-                    src={coverImage}
-                    alt="Cover preview"
-                    className="preview-img"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
+                  <div className="cover-preview-box">
+                    <img
+                      src={coverImage}
+                      alt="Cover preview"
+                      className="preview-img"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -425,7 +412,6 @@ function MyProduct() {
             </div>
           </div>
 
-          {/* 4. Action Buttons: Update, Delete, Cancel */}
           <div className="myproduct-actions-footer">
             <button
               type="button"
@@ -473,7 +459,6 @@ function MyProduct() {
         </form>
       </div>
 
-      {/* 5. Update Confirmation Modal using reusable Modal.jsx */}
       <Modal
         isOpen={showUpdateModal}
         onClose={() => setShowUpdateModal(false)}
@@ -504,7 +489,6 @@ function MyProduct() {
         ]}
       />
 
-      {/* 6. Delete Confirmation Modal using reusable Modal.jsx */}
       <Modal
         isOpen={showDeleteModal}
         onClose={() => {

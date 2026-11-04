@@ -33,7 +33,6 @@ function AddProduct() {
   const context = useOutletContext() || {};
   const { user } = context;
 
-  // Form Fields
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -42,13 +41,11 @@ function AddProduct() {
   const [additionalImages, setAdditionalImages] = useState([]);
   const [currentAdditionalUrl, setCurrentAdditionalUrl] = useState('');
 
-  // UI state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState('');
   const [validationErrors, setValidationErrors] = useState({});
 
-  // Add additional gallery image
   const handleAddImage = (e) => {
     e.preventDefault();
     const trimmed = currentAdditionalUrl.trim();
@@ -105,7 +102,7 @@ function AddProduct() {
       setSuccessMsg(res.message || 'Product listed and added to inventory successfully!');
 
       setTimeout(() => {
-        // Navigate to user's inventory to see their new item
+
         navigate('/dashboard/inventory');
       }, 1500);
     } catch (err) {
@@ -118,7 +115,6 @@ function AddProduct() {
 
   return (
     <div className="add-product-container">
-      {/* 1. Header */}
       <header className="add-product-header">
         <div className="add-product-title-row">
           <Link to="/dashboard/inventory" className="btn-back-link" title="Back to Inventory">
@@ -141,7 +137,6 @@ function AddProduct() {
         </div>
       </header>
 
-      {/* Feedback Alerts */}
       {error && (
         <div className="add-product-alert alert-error">
           <AlertCircle size={18} className="alert-icon" />
@@ -156,18 +151,14 @@ function AddProduct() {
         </div>
       )}
 
-      {/* 2. Form Grid (Main Form + Live Preview Sidebar) */}
       <form onSubmit={handleSubmit} className="add-product-form-layout">
-        {/* Left Column: Form Fields */}
         <div className="form-card-main">
-          {/* Section: Basic Information */}
           <div className="form-section">
             <h3 className="section-title">
               <Layers size={18} />
               <span>General Information</span>
             </h3>
 
-            {/* Product Name */}
             <div className="form-group">
               <label htmlFor="prod-name" className="form-label">
                 Product Name <span className="req-star">*</span>
@@ -190,7 +181,6 @@ function AddProduct() {
               )}
             </div>
 
-            {/* Product Description */}
             <div className="form-group">
               <label htmlFor="prod-desc" className="form-label">
                 Description & Condition <span className="req-star">*</span>
@@ -213,7 +203,6 @@ function AddProduct() {
               )}
             </div>
 
-            {/* Quantity Controls */}
             <div className="form-group">
               <label htmlFor="prod-qty" className="form-label">
                 Available Quantity <span className="req-star">*</span>
@@ -261,14 +250,12 @@ function AddProduct() {
             </div>
           </div>
 
-          {/* Section: Images */}
           <div className="form-section">
             <h3 className="section-title">
               <ImageIcon size={18} />
               <span>Product Images</span>
             </h3>
 
-            {/* Cover Image URL */}
             <div className="form-group">
               <label htmlFor="prod-cover" className="form-label">
                 Cover Image URL <span className="req-star">*</span>
@@ -296,7 +283,6 @@ function AddProduct() {
               )}
             </div>
 
-            {/* Additional Gallery Images */}
             <div className="form-group">
               <label className="form-label">Additional Gallery Images (Optional)</label>
               <div className="add-image-inline-form">
@@ -319,7 +305,6 @@ function AddProduct() {
                 </button>
               </div>
 
-              {/* Gallery Image Badges */}
               {additionalImages.length > 0 && (
                 <div className="gallery-badges-grid">
                   {additionalImages.map((imgUrl, idx) => (
@@ -343,7 +328,6 @@ function AddProduct() {
             </div>
           </div>
 
-          {/* Section: Access Level */}
           <div className="form-section">
             <h3 className="section-title">
               <ShieldCheck size={18} />
@@ -379,7 +363,6 @@ function AddProduct() {
             </div>
           </div>
 
-          {/* Form Actions */}
           <div className="form-actions-bar">
             <Link to="/dashboard/inventory" className="btn-cancel-form">
               Cancel
@@ -404,7 +387,6 @@ function AddProduct() {
           </div>
         </div>
 
-        {/* Right Column: Live Card Preview Sidebar */}
         <aside className="form-sidebar-preview">
           <div className="preview-sticky-card">
             <div className="preview-card-header">
@@ -413,7 +395,6 @@ function AddProduct() {
             </div>
 
             <div className="preview-product-card">
-              {/* Cover Image Container */}
               <div className="preview-image-wrap">
                 {coverImage ? (
                   <img
@@ -435,7 +416,6 @@ function AddProduct() {
                 </span>
               </div>
 
-              {/* Preview Content */}
               <div className="preview-card-details">
                 <span className="preview-donor-tag">
                   By: @{user ? user.username : 'you'}

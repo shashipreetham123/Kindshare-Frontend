@@ -24,7 +24,7 @@ function ChangePasswordCard() {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [feedback, setFeedback] = useState(null); // { type: 'success' | 'error', message: '' }
+  const [feedback, setFeedback] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,7 +109,6 @@ function ChangePasswordCard() {
       )}
 
       <form onSubmit={handleSubmit} className="change-password-form">
-        {/* Old Password */}
         <div className="input-group">
           <label htmlFor="old-password-input">Old Password *</label>
           <div className="password-input-wrapper">
@@ -134,7 +133,6 @@ function ChangePasswordCard() {
           </div>
         </div>
 
-        {/* New Password */}
         <div className="input-group">
           <label htmlFor="new-password-input">New Password *</label>
           <div className="password-input-wrapper">
@@ -160,7 +158,6 @@ function ChangePasswordCard() {
           </div>
         </div>
 
-        {/* Confirm New Password */}
         <div className="input-group">
           <label htmlFor="confirm-password-input">Confirm New Password *</label>
           <div className="password-input-wrapper">
@@ -211,4 +208,3 @@ function ChangePasswordCard() {
 }
 
 export default ChangePasswordCard;
-

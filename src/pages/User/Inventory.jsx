@@ -28,16 +28,13 @@ function Inventory() {
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState('');
 
-  // 2) At the Top a Search Box to Search the Inventory Product with their Name or Id
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
 
-  // Delete Modal state
   const [selectedProductToDelete, setSelectedProductToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteConfirmationInput, setDeleteConfirmationInput] = useState('');
 
-  // Debounce search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(searchTerm);
@@ -45,7 +42,6 @@ function Inventory() {
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  // Fetch only products listed by the currently logged-in user
   const fetchMyInventory = useCallback(async () => {
     if (!user || !user.username) return;
 
@@ -53,7 +49,7 @@ function Inventory() {
     setError(null);
     try {
       const params = new URLSearchParams();
-      // Restrict strictly to logged-in user's username
+
       params.append('username', user.username);
       params.append('limit', 100);
 
@@ -75,7 +71,6 @@ function Inventory() {
     fetchMyInventory();
   }, [fetchMyInventory]);
 
-  // 3) When Clicked on Edit Button or on the InventoryCard navigate to /dashboard/myproduct/:productId
   const handleEditOrNavigate = (product) => {
     const productId = product._id || product.id;
     if (productId) {
@@ -83,7 +78,6 @@ function Inventory() {
     }
   };
 
-  // 4) Delete Button on Inventory Cards Shows Confirm Modal
   const handleOpenDeleteModal = (product) => {
     setSelectedProductToDelete(product);
     setDeleteConfirmationInput('');
@@ -103,7 +97,6 @@ function Inventory() {
       setSelectedProductToDelete(null);
       setDeleteConfirmationInput('');
 
-      // Refresh listings
       await fetchMyInventory();
 
       setTimeout(() => {
@@ -119,7 +112,6 @@ function Inventory() {
 
   return (
     <div className="inventory-page-container">
-      {/* 1. Header Toolbar with Title and Search Box */}
       <header className="inventory-header">
         <div className="inventory-header-left">
           <div className="inventory-title-row">
@@ -141,7 +133,6 @@ function Inventory() {
         </div>
       </header>
 
-      {/* 2. Top Search Box */}
       <div className="inventory-search-bar">
         <div className="inventory-search-input-wrap">
           <Search size={18} className="search-field-icon" />
@@ -176,7 +167,6 @@ function Inventory() {
         )}
       </div>
 
-      {/* Feedback Alerts */}
       {error && (
         <div className="inventory-alert alert-error">
           <AlertCircle size={18} className="alert-icon" />
@@ -191,7 +181,6 @@ function Inventory() {
         </div>
       )}
 
-      {/* 3. Main Inventory Cards Area */}
       <main className="inventory-content-area">
         {loading ? (
           <div className="inventory-loading-state">
@@ -241,7 +230,6 @@ function Inventory() {
         )}
       </main>
 
-      {/* 4. Delete Confirmation Modal using Modal.jsx */}
       <Modal
         isOpen={Boolean(selectedProductToDelete)}
         onClose={() => {

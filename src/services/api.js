@@ -1,7 +1,5 @@
-// Backend API base URL
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
-// Core request wrapper supporting JSON bodies, credentials, and custom options
 async function request(endpoint, options = {}) {
     const url = endpoint.startsWith('http://') || endpoint.startsWith('https://')
         ? endpoint
@@ -12,20 +10,18 @@ async function request(endpoint, options = {}) {
         ...(options.headers || {})
     };
 
-    // If body is already FormData, delete Content-Type so browser sets boundary
     if (options.body instanceof FormData) {
         delete headers['Content-Type'];
     }
 
     const config = {
-        credentials: 'include', // Ensures session cookie is sent with every request
+        credentials: 'include',
         headers,
         ...options
     };
 
     const response = await fetch(url, config);
 
-    // Parse response body if JSON or text
     let data;
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
@@ -44,7 +40,6 @@ async function request(endpoint, options = {}) {
     return data;
 }
 
-// Reusable HTTP helper methods
 export const api = {
     get(endpoint, options = {}) {
         return request(endpoint, {

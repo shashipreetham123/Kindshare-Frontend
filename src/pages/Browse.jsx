@@ -26,34 +26,28 @@ function Browse() {
   const context = useOutletContext() || {};
   const { user, isAdmin } = context;
 
-  // Products and Pagination state
   const [products, setProducts] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(9);
 
-  // Filters
   const [searchTerm, setSearchTerm] = useState('');
   const [usernameFilter, setUsernameFilter] = useState('');
   const [minQuantity, setMinQuantity] = useState(1);
   const [sortOption, setSortOption] = useState('latest');
 
-  // Floating Filter Panel Visibility
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // Debounced fetch trigger
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [debouncedUser, setDebouncedUser] = useState('');
 
-  // Handle debouncing for input fields
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(searchTerm);
-      setPage(1); // Reset to page 1 on new search
+      setPage(1);
     }, 350);
     return () => clearTimeout(handler);
   }, [searchTerm]);
@@ -61,12 +55,11 @@ function Browse() {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedUser(usernameFilter);
-      setPage(1); // Reset to page 1 on new username search
+      setPage(1);
     }, 350);
     return () => clearTimeout(handler);
   }, [usernameFilter]);
 
-  // Main fetch function
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -89,7 +82,6 @@ function Browse() {
         params.append('sort', sortOption);
       }
 
-      // Use the appropriate endpoint based on user role if needed, or /user/product
       const endpoint = isAdmin ? `/admin/product?${params.toString()}` : `/user/product?${params.toString()}`;
       const res = await api.get(endpoint);
 
@@ -108,7 +100,6 @@ function Browse() {
     fetchProducts();
   }, [fetchProducts]);
 
-  // Calculate pagination
   const totalPages = Math.max(1, Math.ceil(totalCount / limit));
   const hasActiveFilters =
     Boolean(searchTerm.trim()) ||
@@ -133,7 +124,6 @@ function Browse() {
 
   return (
     <div className="browse-container">
-      {/* 1. Header Toolbar with Sort & Floating Filter Trigger */}
       <header className="browse-header">
         <div className="browse-header-left">
           <h1>Browse Community Offerings</h1>
@@ -144,7 +134,6 @@ function Browse() {
         </div>
 
         <div className="browse-header-actions">
-          {/* Sort Dropdown (A-Z, Z-A, Latest, Oldest) */}
           <div className="sort-control-group">
             <label htmlFor="browse-sort-select" className="sort-label">
               <ArrowUpDown size={15} />
@@ -166,7 +155,6 @@ function Browse() {
             </select>
           </div>
 
-          {/* Floating Filter Container Trigger Button */}
           <button
             type="button"
             className={`floating-filter-toggle ${isFilterOpen ? 'active' : ''} ${
@@ -183,7 +171,6 @@ function Browse() {
         </div>
       </header>
 
-      {/* 2. Floating Filter Container Modal / Popover */}
       {isFilterOpen && (
         <div className="filter-backdrop" onClick={() => setIsFilterOpen(false)} />
       )}
@@ -209,7 +196,6 @@ function Browse() {
         </div>
 
         <div className="filter-panel-body">
-          {/* Filter 1: Textbox for Searching Product through name or mongodb id */}
           <div className="filter-field">
             <label htmlFor="filter-search-input">Product Name or ID</label>
             <div className="filter-input-wrap">
@@ -236,7 +222,6 @@ function Browse() {
             <span className="field-hint">Search by title or MongoDB ObjectId</span>
           </div>
 
-          {/* Filter 2: Textbox for Searching Products through Username */}
           <div className="filter-field">
             <label htmlFor="filter-username-input">Donor Username</label>
             <div className="filter-input-wrap">
@@ -263,7 +248,6 @@ function Browse() {
             <span className="field-hint">Filter items listed by specific donors</span>
           </div>
 
-          {/* Filter 3: Quantity slider (min = 1) */}
           <div className="filter-field">
             <div className="slider-header-row">
               <label htmlFor="filter-quantity-slider">Minimum Quantity Available</label>
@@ -313,7 +297,6 @@ function Browse() {
         </div>
       </div>
 
-      {/* 3. Main Product Cards Display Area */}
       <main className="browse-main-content">
         {loading ? (
           <div className="browse-loading-state">
@@ -364,7 +347,6 @@ function Browse() {
         )}
       </main>
 
-      {/* 4. Offset/Limit Multiple Pages Pagination Footer */}
       {!loading && totalCount > 0 && (
         <footer className="browse-pagination-footer">
           <div className="pagination-limit-wrap">
@@ -407,7 +389,6 @@ function Browse() {
               <ChevronLeft size={16} />
             </button>
 
-            {/* Page number indicators */}
             <div className="page-numbers">
               {Array.from({ length: totalPages }, (_, i) => i + 1)
                 .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)

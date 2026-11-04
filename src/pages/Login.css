@@ -171,14 +171,14 @@
   color: var(--text-muted);
 }
 
-.btn-secondary {
+.auth-link {
   color: #6366f1;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.btn-secondary:hover {
+.auth-link:hover {
   color: #4f46e5;
   text-decoration: underline;
 }

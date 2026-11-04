@@ -22,13 +22,12 @@ function Login() {
 
     try {
       setLoading(true);
-      // Calls backend /login endpoint (mounted under /api/auth or /auth)
+
       await api.post('/auth/login', {
         username: username.trim(),
         password
       });
 
-      // On successful login, navigate to frontend dashboard
       navigate('/dashboard');
     } catch (err) {
       setError((err.data && err.data.message) || err.message || 'Login failed. Please check your credentials.');
@@ -106,7 +105,7 @@ function Login() {
 
         <div className="login-footer">
           <span>Don't have an account?</span>
-          <Link to="/register" className="btn-secondary">
+          <Link to="/register" className="auth-link">
             Register
           </Link>
         </div>

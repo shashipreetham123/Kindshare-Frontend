@@ -25,7 +25,7 @@ function Request() {
   const context = useOutletContext() || {};
   const { user } = context;
 
-  const [activeTab, setActiveTab] = useState('donor'); // 'donor' | 'beneficiary'
+  const [activeTab, setActiveTab] = useState('donor');
   const [requestsAsDonor, setRequestsAsDonor] = useState([]);
   const [requestsAsBeneficiary, setRequestsAsBeneficiary] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,10 +33,9 @@ function Request() {
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Modal State for Confirming Actions
   const [modalConfig, setModalConfig] = useState({
     isOpen: false,
-    actionType: null, // 'accept' | 'decline' | 'cancel'
+    actionType: null,
     requestItem: null,
     title: '',
     message: '',
@@ -46,7 +45,6 @@ function Request() {
     confirmIcon: null
   });
 
-  // Fetch Requests
   const fetchRequests = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -67,7 +65,6 @@ function Request() {
     fetchRequests();
   }, [fetchRequests]);
 
-  // Open Accept Modal (Donor Action)
   const openAcceptModal = (req) => {
     const prodName = req.product ? req.product.name : 'this item';
     setModalConfig({
@@ -83,7 +80,6 @@ function Request() {
     });
   };
 
-  // Open Decline Modal (Donor Action)
   const openDeclineModal = (req) => {
     const prodName = req.product ? req.product.name : 'this item';
     setModalConfig({
@@ -99,7 +95,6 @@ function Request() {
     });
   };
 
-  // Open Cancel Modal (Beneficiary Action)
   const openCancelModal = (req) => {
     const prodName = req.product ? req.product.name : 'this item';
     setModalConfig({
@@ -115,7 +110,6 @@ function Request() {
     });
   };
 
-  // Execute Action from Modal
   const handleConfirmAction = async () => {
     const { actionType, requestItem } = modalConfig;
     if (!requestItem) return;
@@ -155,7 +149,6 @@ function Request() {
 
   return (
     <div className="requests-container">
-      {/* 1. Header with Title and Section Switcher */}
       <header className="requests-header">
         <div className="requests-title-col">
           <div className="requests-title-row">

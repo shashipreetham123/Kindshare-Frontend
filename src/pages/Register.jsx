@@ -57,7 +57,6 @@ function Register() {
         email: formData.email.trim()
       });
 
-      // Redirect to login after successful registration
       navigate('/login');
     } catch (err) {
       setError(
@@ -234,7 +233,7 @@ function Register() {
 
         <div className="register-footer">
           <span>Already have an account?</span>
-          <Link to="/login" className="btn-secondary">
+          <Link to="/login" className="auth-link">
             Sign In
           </Link>
         </div>

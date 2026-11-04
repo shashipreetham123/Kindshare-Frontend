@@ -33,17 +33,14 @@ function History() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Pagination parameters: offset and limit
   const [offset, setOffset] = useState(0);
-  const [limit, setLimit] = useState(10); // default limit: 10 per page
+  const [limit, setLimit] = useState(10);
 
-  // Filters & Search
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEventType, setSelectedEventType] = useState('all');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  // Fetch logged-in user history using offset and limit
   const fetchHistory = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -77,7 +74,6 @@ function History() {
     fetchHistory();
   }, [fetchHistory]);
 
-  // Client-side quick filter for the currently loaded page if user searches
   const filteredHistory = useMemo(() => {
     if (!searchQuery.trim()) return historyList;
     const query = searchQuery.toLowerCase().trim();
@@ -88,7 +84,6 @@ function History() {
     });
   }, [historyList, searchQuery]);
 
-  // Pagination helpers
   const currentPage = Math.floor(offset / limit) + 1;
   const totalPages = Math.max(1, Math.ceil(totalCount / limit));
   const hasPrev = offset > 0;
@@ -118,10 +113,9 @@ function History() {
   const handleLimitChange = (e) => {
     const newLimit = parseInt(e.target.value, 10);
     setLimit(newLimit);
-    setOffset(0); // Reset to first page when changing page size
+    setOffset(0);
   };
 
-  // Helper for event icon, badge class, and readable title
   const getEventMeta = (eventStr = '') => {
     const ev = eventStr.toLowerCase();
     if (ev.includes('completed')) {
@@ -182,7 +176,6 @@ function History() {
 
   return (
     <div className="history-container">
-      {/* 1. Header with Stats & Offset/Limit Indicators */}
       <header className="history-header">
         <div className="history-title-row">
           <HistoryIcon className="header-icon" size={28} />
@@ -194,7 +187,6 @@ function History() {
           </div>
         </div>
 
-        {/* Total Records and Limit Selector */}
         <div className="history-header-controls">
           <div className="history-count-badge">
             <span>Total:</span>
@@ -219,9 +211,7 @@ function History() {
         </div>
       </header>
 
-      {/* 2. Search & Filter Bar */}
       <section className="history-filters-bar">
-        {/* Search input */}
         <div className="history-search-wrap">
           <Search size={18} className="search-icon" />
           <input
@@ -233,7 +223,6 @@ function History() {
           />
         </div>
 
-        {/* Event Type Filter */}
         <div className="history-select-wrap">
           <Filter size={16} className="filter-icon" />
           <select
@@ -253,7 +242,6 @@ function History() {
           </select>
         </div>
 
-        {/* Date Filters */}
         <div className="history-date-group">
           <div className="date-input-wrap">
             <span className="date-label">From:</span>
@@ -282,7 +270,6 @@ function History() {
           </div>
         </div>
 
-        {/* Reset button if filters active */}
         {(searchQuery || selectedEventType !== 'all' || startDate || endDate || offset > 0) && (
           <button
             type="button"
@@ -296,7 +283,6 @@ function History() {
         )}
       </section>
 
-      {/* Error Alert */}
       {error && (
         <div className="history-alert alert-error">
           <AlertCircle size={18} className="alert-icon" />
@@ -304,7 +290,6 @@ function History() {
         </div>
       )}
 
-      {/* 3. Main Timeline Content */}
       <main className="history-main-content">
         {loading ? (
           <div className="history-loading-state">
@@ -356,7 +341,6 @@ function History() {
 
               return (
                 <div key={item._id || index} className="history-item-card">
-                  {/* Left Column: Icon Indicator & Connection Line */}
                   <div className="history-item-indicator">
                     <div
                       className="history-icon-circle"
@@ -367,7 +351,6 @@ function History() {
                     {index < filteredHistory.length - 1 && <div className="history-line" />}
                   </div>
 
-                  {/* Right Column: Card Content */}
                   <div className="history-card-body">
                     <div className="history-card-header">
                       <div className="history-event-tags">
@@ -405,7 +388,6 @@ function History() {
         )}
       </main>
 
-      {/* 4. Offset & Limit Pagination Bar */}
       {totalCount > 0 && (
         <footer className="history-pagination-bar">
           <div className="pagination-info">

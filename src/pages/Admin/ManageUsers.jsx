@@ -38,10 +38,8 @@ function ManageUsers() {
   const [roleFilter, setRoleFilter] = useState('all');
   const [verifyFilter, setVerifyFilter] = useState('all');
 
-  // Notifications
-  const [feedback, setFeedback] = useState(null); // { type: 'success' | 'error', message: '' }
+  const [feedback, setFeedback] = useState(null);
 
-  // Modal States
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -56,12 +54,10 @@ function ManageUsers() {
     verified: false
   });
 
-  // Delete Modal State
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleteConfirmInput, setDeleteConfirmInput] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Fetch all users via GET /api/admin/user
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
@@ -79,7 +75,6 @@ function ManageUsers() {
     fetchUsers();
   }, [fetchUsers]);
 
-  // Statistics calculation
   const stats = useMemo(() => {
     const total = users.length;
     const verified = users.filter((u) => u.verified).length;
@@ -88,7 +83,6 @@ function ManageUsers() {
     return { total, verified, unverified, admins };
   }, [users]);
 
-  // Filtered users
   const filteredUsers = useMemo(() => {
     return users.filter((u) => {
       const term = searchTerm.toLowerCase().trim();
@@ -117,7 +111,6 @@ function ManageUsers() {
     });
   }, [users, searchTerm, roleFilter, verifyFilter]);
 
-  // Toggle Verification (PUT /api/admin/user/:username/verify)
   const handleToggleVerification = async (targetUser) => {
     const newStatus = !targetUser.verified;
     try {
@@ -140,7 +133,6 @@ function ManageUsers() {
     }
   };
 
-  // Create User Form Handling
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -183,7 +175,6 @@ function ManageUsers() {
     }
   };
 
-  // Delete User Confirmation
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
     setIsDeleting(true);
@@ -209,7 +200,6 @@ function ManageUsers() {
 
   return (
     <div className="admin-users-container">
-      {/* 1. Header Toolbar */}
       <header className="admin-users-header">
         <div className="header-left-group">
           <div className="header-icon-wrap">
@@ -244,7 +234,6 @@ function ManageUsers() {
         </div>
       </header>
 
-      {/* 2. Notification Banner */}
       {feedback && (
         <div className={`admin-alert-banner alert-${feedback.type}`}>
           <div className="alert-left">
@@ -265,7 +254,6 @@ function ManageUsers() {
         </div>
       )}
 
-      {/* 3. Statistical Overview Cards */}
       <div className="admin-stats-row">
         <div className="stat-card">
           <div className="stat-icon total">
@@ -305,7 +293,6 @@ function ManageUsers() {
         </div>
       </div>
 
-      {/* 4. Search and Filter Bar */}
       <div className="users-toolbar-card">
         <div className="search-field-wrap">
           <Search size={17} className="search-icon" />
@@ -349,7 +336,6 @@ function ManageUsers() {
         </div>
       </div>
 
-      {/* 5. User Roster Table */}
       <div className="users-table-container">
         <table className="users-table">
           <thead>
@@ -474,7 +460,6 @@ function ManageUsers() {
         </table>
       </div>
 
-      {/* 6. Create User Modal */}
       <Modal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
@@ -608,7 +593,6 @@ function ManageUsers() {
         </form>
       </Modal>
 
-      {/* 7. Delete User Modal */}
       <Modal
         isOpen={Boolean(deleteTarget)}
         onClose={() => setDeleteTarget(null)}
@@ -662,4 +646,3 @@ function ManageUsers() {
 }
 
 export default ManageUsers;
-

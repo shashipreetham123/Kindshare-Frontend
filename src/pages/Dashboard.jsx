@@ -31,7 +31,7 @@ function Dashboard() {
         const res = await api.get('/user/me');
         setUser(res.user);
       } catch (err) {
-        // If unauthenticated, redirect to login
+
         navigate('/login');
       } finally {
         setLoading(false);

@@ -17,7 +17,7 @@ import {
 import api from '../../services/api';
 import Modal from '../../components/Modal';
 import './ManageProducts.css';
-import './ManageUsers.css'; // Shared admin styling
+import './ManageUsers.css';
 
 function ManageProducts() {
   const navigate = useNavigate();
@@ -25,11 +25,9 @@ function ManageProducts() {
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState(null);
 
-  // Filters
   const [searchTerm, setSearchTerm] = useState('');
   const [usernameFilter, setUsernameFilter] = useState('');
 
-  // Delete / Delist Modal State
   const [delistTarget, setDelistTarget] = useState(null);
   const [delistConfirmInput, setDelistConfirmInput] = useState('');
   const [isDelisting, setIsDelisting] = useState(false);
@@ -93,7 +91,6 @@ function ManageProducts() {
 
   return (
     <div className="admin-products-container">
-      {/* 1. Header */}
       <header className="admin-products-header">
         <div className="header-left-group">
           <div className="header-icon-wrap product-theme">
@@ -120,7 +117,6 @@ function ManageProducts() {
         </div>
       </header>
 
-      {/* 2. Feedback Notification */}
       {feedback && (
         <div className={`admin-alert-banner alert-${feedback.type}`}>
           <div className="alert-left">
@@ -141,7 +137,6 @@ function ManageProducts() {
         </div>
       )}
 
-      {/* 3. Search Bar */}
       <div className="users-toolbar-card">
         <div className="search-field-wrap">
           <Search size={17} className="search-icon" />
@@ -173,7 +168,6 @@ function ManageProducts() {
         </div>
       </div>
 
-      {/* 4. Products Table */}
       <div className="users-table-container">
         <table className="users-table">
           <thead>
@@ -280,7 +274,6 @@ function ManageProducts() {
         </table>
       </div>
 
-      {/* 5. Delist Confirmation Modal */}
       <Modal
         isOpen={Boolean(delistTarget)}
         onClose={() => setDelistTarget(null)}
@@ -333,4 +326,3 @@ function ManageProducts() {
 }
 
 export default ManageProducts;
-

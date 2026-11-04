@@ -10,26 +10,9 @@ import {
 } from 'lucide-react';
 import './ProductCard.css';
 
-/**
- * ProductCard Component
- * Displays product cover image, name, donor username, and donor verification status.
- *
- * Props:
- * - product: Object containing:
- *   - coverImage: URL string for the product image
- *   - name: Product name string
- *   - username / donorUsername / donor.username: String of donor username
- *   - verified / donorVerified / donor.verified: Boolean of donor verification status
- *   - quantity / available: (optional) Number of items available
- *   - description: (optional) Short description text
- *   - accessLevel: (optional) Access level number or label
- *   - listedAt: (optional) Date string
- * - onClick: (optional) Click handler function for the card
- */
 function ProductCard({ product = {}, onClick }) {
   const [imageError, setImageError] = useState(false);
 
-  // Extract fields gracefully with fallbacks
   const {
     coverImage,
     name = 'Unnamed Product',
@@ -46,10 +29,8 @@ function ProductCard({ product = {}, onClick }) {
     listedAt
   } = product;
 
-  // Resolve donor username
   const donorName = donorUsername || (donor && donor.username) || username || 'Anonymous Donor';
 
-  // Resolve donor verification status (handles boolean or nested object)
   const isDonorVerified = Boolean(
     verified !== undefined
       ? verified
@@ -75,7 +56,6 @@ function ProductCard({ product = {}, onClick }) {
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
-      {/* 1. Cover Image Container with Status Overlay */}
       <div className="product-image-wrap">
         {!imageError && coverImage ? (
           <img
@@ -92,7 +72,6 @@ function ProductCard({ product = {}, onClick }) {
           </div>
         )}
 
-        {/* Verification Floating Badge over image */}
         <div className="image-badge-overlay">
           <span
             className={`donor-badge ${
@@ -121,7 +100,6 @@ function ProductCard({ product = {}, onClick }) {
         )}
       </div>
 
-      {/* 2. Product Details Body */}
       <div className="product-body">
         <h3 className="product-name" title={name}>
           {name}
@@ -133,7 +111,6 @@ function ProductCard({ product = {}, onClick }) {
           </p>
         )}
 
-        {/* 3. Donor Attribution & Verification Footer */}
         <div className="product-donor-row">
           <div className="donor-profile">
             <div className="donor-avatar">

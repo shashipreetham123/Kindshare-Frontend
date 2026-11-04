@@ -14,11 +14,11 @@ import {
   Calendar
 } from 'lucide-react';
 import api from '../../services/api';
-import './ManageUsers.css'; // Shared table & toolbar styles
+import './ManageUsers.css';
 
 function ManageRequestsReserves() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('requests'); // 'requests' | 'reserves'
+  const [activeTab, setActiveTab] = useState('requests');
   const [requests, setRequests] = useState([]);
   const [reserves, setReserves] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -70,7 +70,6 @@ function ManageRequestsReserves() {
 
   return (
     <div className="admin-users-container">
-      {/* 1. Header Toolbar */}
       <header className="admin-users-header">
         <div className="header-left-group">
           <div className="header-icon-wrap" style={{ backgroundColor: '#fef3c7', color: '#b45309' }}>
@@ -97,24 +96,11 @@ function ManageRequestsReserves() {
         </div>
       </header>
 
-      {/* 2. Tabs Switcher */}
-      <div style={{ display: 'flex', gap: '0.75rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem' }}>
+      <div className="admin-tab-nav">
         <button
           type="button"
           onClick={() => setActiveTab('requests')}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.6rem 1.25rem',
-            borderRadius: '0.75rem',
-            border: 'none',
-            fontSize: '0.9rem',
-            fontWeight: 700,
-            cursor: 'pointer',
-            backgroundColor: activeTab === 'requests' ? '#4f46e5' : '#f8fafc',
-            color: activeTab === 'requests' ? '#ffffff' : '#64748b'
-          }}
+          className={`admin-tab-btn ${activeTab === 'requests' ? 'active' : ''}`}
         >
           <Inbox size={17} />
           <span>Active Requests ({requests.length})</span>
@@ -123,26 +109,13 @@ function ManageRequestsReserves() {
         <button
           type="button"
           onClick={() => setActiveTab('reserves')}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.6rem 1.25rem',
-            borderRadius: '0.75rem',
-            border: 'none',
-            fontSize: '0.9rem',
-            fontWeight: 700,
-            cursor: 'pointer',
-            backgroundColor: activeTab === 'reserves' ? '#4f46e5' : '#f8fafc',
-            color: activeTab === 'reserves' ? '#ffffff' : '#64748b'
-          }}
+          className={`admin-tab-btn ${activeTab === 'reserves' ? 'active' : ''}`}
         >
           <BookmarkCheck size={17} />
           <span>Active Reserves ({reserves.length})</span>
         </button>
       </div>
 
-      {/* 3. Search Bar */}
       <div className="users-toolbar-card">
         <div className="search-field-wrap">
           <Search size={17} className="search-icon" />
@@ -155,7 +128,6 @@ function ManageRequestsReserves() {
         </div>
       </div>
 
-      {/* 4. Table Representation */}
       <div className="users-table-container">
         {activeTab === 'requests' ? (
           <table className="users-table">
@@ -273,4 +245,3 @@ function ManageRequestsReserves() {
 }
 
 export default ManageRequestsReserves;
-

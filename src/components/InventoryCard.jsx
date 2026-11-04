@@ -13,9 +13,6 @@ import {
 } from 'lucide-react';
 import './InventoryCard.css';
 
-/**
- * Access level mapping helper
- */
 const ACCESS_LEVEL_LABELS = {
   1: { label: 'Individuals Only', badgeClass: 'access-individual' },
   2: { label: 'Organizations Only', badgeClass: 'access-organization' },
@@ -23,30 +20,10 @@ const ACCESS_LEVEL_LABELS = {
   4: { label: 'Everyone', badgeClass: 'access-everyone' }
 };
 
-/**
- * InventoryCard Component
- * Specifically tailored for user/admin inventory management.
- * Shows Name, Quantity, CoverImage, along with expandable/optional item details.
- *
- * Props:
- * - item / product: Object containing:
- *   - coverImage: Image URL
- *   - name: Product/Item name
- *   - quantity / available: Current quantity in stock
- *   - description: (optional) Item description
- *   - accessLevel: (optional) Access level integer (1-4)
- *   - listedAt: (optional) Date string or Date object
- *   - images: (optional) Array of secondary image URLs
- *   - _id / id: (optional) MongoDB identifier
- * - onEdit: (optional) Callback when Edit button is clicked
- * - onDelete: (optional) Callback when Delete button is clicked
- * - onClick: (optional) Click handler for the card
- */
 function InventoryCard({ item = {}, product, onEdit, onDelete, onClick }) {
   const [imageError, setImageError] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
 
-  // Fallback between item or product prop
   const data = item && Object.keys(item).length > 0 ? item : product || {};
 
   const {
@@ -95,7 +72,6 @@ function InventoryCard({ item = {}, product, onEdit, onDelete, onClick }) {
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
-      {/* 1. Cover Image Wrap */}
       <div className="inventory-image-wrap">
         {!imageError && coverImage ? (
           <img
@@ -112,7 +88,6 @@ function InventoryCard({ item = {}, product, onEdit, onDelete, onClick }) {
           </div>
         )}
 
-        {/* Stock Status Badge Overlay */}
         <div className="inventory-stock-badge-overlay">
           <span
             className={`stock-badge ${
@@ -130,7 +105,6 @@ function InventoryCard({ item = {}, product, onEdit, onDelete, onClick }) {
           </span>
         </div>
 
-        {/* Access Level Badge */}
         {accessLevel !== undefined && (
           <div className="inventory-access-badge-overlay">
             <span className={`access-pill ${accessInfo.badgeClass}`}>
@@ -141,7 +115,6 @@ function InventoryCard({ item = {}, product, onEdit, onDelete, onClick }) {
         )}
       </div>
 
-      {/* 2. Main Content Body */}
       <div className="inventory-body">
         <div className="inventory-header-row">
           <h3 className="inventory-name" title={name}>
@@ -158,7 +131,6 @@ function InventoryCard({ item = {}, product, onEdit, onDelete, onClick }) {
           </p>
         )}
 
-        {/* Optional Metadata Row */}
         <div className="inventory-meta-row">
           {formattedDate && (
             <div className="inventory-meta-item" title="Listed date">
@@ -175,7 +147,6 @@ function InventoryCard({ item = {}, product, onEdit, onDelete, onClick }) {
           )}
         </div>
 
-        {/* Optional Details Toggle Button */}
         <button
           type="button"
           className="inventory-details-toggle"
@@ -187,7 +158,6 @@ function InventoryCard({ item = {}, product, onEdit, onDelete, onClick }) {
           {showDetails ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </button>
 
-        {/* Collapsible Optional Details Drawer */}
         {showDetails && (
           <div className="inventory-optional-details">
             {(_id || id) && (
@@ -224,7 +194,6 @@ function InventoryCard({ item = {}, product, onEdit, onDelete, onClick }) {
           </div>
         )}
 
-        {/* Optional Action Controls (Edit/Delete) if provided */}
         {(onEdit || onDelete) && (
           <div className="inventory-actions-row">
             {onEdit && (

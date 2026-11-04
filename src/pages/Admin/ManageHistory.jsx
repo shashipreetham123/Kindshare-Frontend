@@ -25,14 +25,12 @@ function ManageHistory() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Filters
   const [usernameFilter, setUsernameFilter] = useState(initialUsername);
   const [eventFilter, setEventFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  // Synchronize URL param with filter state
   useEffect(() => {
     const u = searchParams.get('username') || '';
     if (u !== usernameFilter) {
@@ -81,7 +79,6 @@ function ManageHistory() {
     setSearchParams({});
   };
 
-  // Filter list by search query (matching short/long summary or username)
   const filteredHistory = useMemo(() => {
     if (!searchQuery.trim()) return historyList;
     const q = searchQuery.toLowerCase().trim();
@@ -105,7 +102,6 @@ function ManageHistory() {
 
   return (
     <div className="admin-history-container">
-      {/* 1. Header Toolbar */}
       <header className="admin-history-header">
         <div className="header-left-group">
           <div className="header-icon-wrap history-theme">
@@ -132,7 +128,6 @@ function ManageHistory() {
         </div>
       </header>
 
-      {/* 2. Filters Card */}
       <div className="history-filters-card">
         <div className="filters-row">
           <div className="filter-input-wrap">
@@ -228,7 +223,6 @@ function ManageHistory() {
         </div>
       </div>
 
-      {/* 3. Audit Table */}
       <div className="history-table-container">
         <table className="history-table">
           <thead>
@@ -320,4 +314,3 @@ function ManageHistory() {
 }
 
 export default ManageHistory;
-
